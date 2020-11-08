@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Main from '@/components/Main'
+import Main from '@/components/Main';
+import Header from "@/components/user-module/Header";
 
 Vue.use(Router)
 
@@ -10,6 +11,11 @@ export default new Router({
       path: '/',
       name: 'Main',
       component: Main
+    },
+    {
+      path: '/head',
+      name: 'Header',
+      component: Header
     }
   ]
 })
