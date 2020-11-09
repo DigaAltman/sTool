@@ -39,12 +39,12 @@
         <div class="search-item" v-if="searchValue.length > 0">
 
           <div class="search-block" v-if="searchValue.length > 0">
-            <div class="search-title">解析搜索表达式</div>
+            <div class="search-title"><img src="../../assets/expr-lang.png"/>解析搜索表达式</div>
             <div class="search-body">{{searchValue}}</div>
           </div>
 
           <div class="search-block" v-if="databaseGroupList.length > 0">
-            <div class="search-title">查询数据库组</div>
+            <div class="search-title"><img src="../../assets/database-group-icon.png"/>查询数据库组</div>
             <div class="search-body" v-for="(item,index) in databaseGroupList" :index="index">
               <div v-if="!item.includes('*')"><a :href="'database/detail/' + item"></a></div>
               <div v-else>{{item}}</div>
@@ -52,7 +52,7 @@
           </div>
 
           <div class="search-block" v-if="databaseList.length > 0">
-            <div class="search-title">查询数据库</div>
+            <div class="search-title"><img src="../../assets/database-icon.png"/>查询数据库</div>
             <div class="search-body" v-for="(item,index) in databaseList" :index="index">
               <div v-if="!item.includes('*')"><a :href="'database/detail/' + item"></a></div>
               <div v-else>{{item}}</div>
@@ -158,10 +158,9 @@
 
 <style lang="scss" scoped>
   .header {
-    position: relative;
+    position: fixed;
     width: 100%;
     height: 60px;
-
 
     .header-body {
       justify-content: space-between;
@@ -259,7 +258,7 @@
     }
 
     .header-tips {
-      position: fixed;
+      /*position: fixed;*/
       justify-content: space-between;
       padding: 10px 20px;
       display: flex;
@@ -294,7 +293,7 @@
 
           .search-block {
             .search-title {
-              width: 100px;
+              width: 95px;
               height: 18px;
               line-height: 18px;
               margin-top: 10px;
@@ -307,7 +306,8 @@
             }
 
             .search-body {
-              width: 100%;
+              width: 96%;
+              margin: 0 auto;
               padding: 5px 10px;
               min-height: 80px;
               border: 1px solid #6f5d51;
