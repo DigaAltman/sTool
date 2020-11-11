@@ -1,30 +1,11 @@
 <template>
   <div class="loading">
-    <div class="loading-body" :style="{backgroundColor: load.success ? '#00691b' : load.error ? '#d80c0c' : load.server ? '#f18100' : '#323232'}">
-      <template v-if="load.loading">
-        <div class="loading-animation">
-          <div v-for="(item,index) in Array.from({length: maxLength}, () => {})"
-               :class="{point:true, select:index === selectIndex, transform: index === (selectIndex + 1)}"></div>
-        </div>
-        <div :style="{fontSize: '14px', fontWeight: 600}">
-          加载中{{ '.'.repeat( (selectIndex + 2)/2) }}
-        </div>
-      </template>
-
-      <template v-if="load.success">
-        <div class="loading-text">SUCCESS</div>
-        <div class="error-message">请求成功!!</div>
-      </template>
-
-      <template v-if="load.error">
-        <div class="loading-text">ERROR</div>
-        <div class="error-message">无法访问服务器!!</div>
-      </template>
-
-      <template v-if="load.server">
-        <div class="loading-text">SERVER</div>
-        <div class="error-message">{{message}}</div>
-      </template>
+    <div class="loading-body">
+      <div v-for="(item, index) in Array.from({length: maxLength})"
+           :index="index"
+           :style="{backgroundColor: selectIndex === index ? bgColor[index]['select'] : bgColor[index]['noSelect']}"
+           :class="{block: true, zoom: selectIndex === index, left: index === 0, top: index === 1, right: index === 2}">
+      </div>
     </div>
   </div>
 </template>
@@ -33,34 +14,37 @@
   // 加载组件
   export default {
     name: "Loading",
-
-    props: {
-      load: {
-        type: Object
-      },
-      message: {
-        type: String
-      }
-    },
     data() {
       return {
-        selectIndex: 0,
-        maxLength: 5
+        selectIndex: 1,
+        maxLength: 3,
+        bgColor: [
+          {
+            noSelect: '#259403',
+            select: '#49ff00'
+          },
+          {
+            noSelect: '#ada903',
+            select: '#f3c000'
+          },
+          {
+            noSelect: '#b70000',
+            select: '#f30000'
+          }
+        ]
       }
     },
     mounted() {
       let _that = this;
       setInterval(function () {
         _that.selectIndex = ++_that.selectIndex % _that.maxLength;
-      }, 300);
+      }, 500);
     }
-
   }
 </script>
 
 <style lang="scss" scoped>
   .loading {
-    font-family: "DejaVu Sans Mono";
     position: fixed;
     width: 100%;
     height: 100%;
@@ -68,56 +52,123 @@
     align-items: center;
 
     .loading-body {
-      width: 150px;
-      height: 60px;
+      width: 200px;
+      height: 100px;
       margin: 0 auto;
+      background-color: #323232;
       padding: 5px 0;
-      color: #fff;
-      display: flex;
       transition: background-color 0.5s;
-      flex-direction: column;
-      justify-content: space-evenly;
-      align-items: center;
 
-      .loading-animation {
-        width: 80px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-
-        .point {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background-color: #bbb;
-        }
-
-        .select {
-          width: 12px;
-          height: 12px;
-          background-color: #fff;
-        }
-
-        .transform {
-          width: 10px;
-          height: 10px;
-          background-color: #EEE1D0;
-        }
+      .block {
+        display: inline-block;
+        position: relative;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        transition: width 0.5s, height 0.5s, border-radius 0.5s, background-color 0.5s;
       }
 
-      .loading-text {
-        font-size: 25px;
-        font-weight: bolder;
+      .top {
+        top: -10px;
+        left: 0px;
+
+        /*animation:b 2s;*/
+        /*animation-iteration-count:1;*/
+
+        /*-webkit-animation:b 2s;*/
+        /*-webkit-animation-iteration-count:1;*/
       }
 
-      .error-message {
-        font-size: 12px;
-        font-weight: bold;
+      .left {
+        top: 70px;
+        left: -30px;
+
+        /*animation:a 2s;*/
+        /*animation-iteration-count:1;*/
+
+        /*-webkit-animation:a 2s;*/
+        /*-webkit-animation-iteration-count:1;*/
+      }
+
+      .right {
+        top: 70px;
+        left: 30px;
+
+        animation:c 2s;
+        animation-iteration-count:1;
+
+        -webkit-animation:c 2s;
+        -webkit-animation-iteration-count:1;
+      }
+
+      .zoom {
+        /*width: 25px;*/
+        /*height: 25px;*/
+        border-radius: 12px;
       }
     }
   }
 
+  @keyframes a
+  {
+    0%   {
+      left: -30px;
+      top: 70px;
+    }
+    33.3%  {
+      left: 0px;
+      top: -10px;
+    }
+    66.6%  {
+      left: 30px;
+      top: 70px;
+    }
+    100%  {
+      left: -30px;
+      top: 70px;
+    }
+  }
+
+  @keyframes b
+  {
+    0%   {
+      left: 0px;
+      top: -10px;
+    }
+    33.3%  {
+      left: 30px;
+      top: 70px;
+    }
+    66.6%  {
+      left: -30px;
+      top: 70px;
+    }
+    100%  {
+      left: 0px;
+      top: -10px;
+    }
+  }
+
+
+  @keyframes c
+  {
+    0%   {
+      left: 30px;
+      top: -70px;
+    }
+    33.3%  {
+      left: 0px;
+      top: -10px;
+    }
+    66.6%  {
+      left: -30px;
+      top: 70px;
+    }
+    100%  {
+      left: 30px;
+      top: -70px;
+    }
+  }
 
   /*#loading-animal {*/
   /*  margin-top: 10px;*/

@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Main from '@/components/Main';
-import Header from "@/components/user-module/Header";
+import Header from '@/components/user-module/Header';
+import Loading from '@/components/common-component/Loading';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -16,6 +17,11 @@ export default new Router({
       path: '/head',
       name: 'Header',
       component: Header
+    },
+    {
+      path: '/loading',
+      name: 'Loading',
+      component: Loading
     }
   ]
 })

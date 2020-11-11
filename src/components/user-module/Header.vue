@@ -33,44 +33,43 @@
     </div>
 
     <!-- 提示部分 -->
-    <div class="header-tips">
-      <div class="left">
-        <div class="icon"></div>
-        <div class="search-item" v-if="searchValue.length > 0">
+<!--    <div class="header-tips">-->
+<!--      <div class="left">-->
+<!--        <div class="icon"></div>-->
+<!--        <div class="search-item" v-if="searchValue.length > 0">-->
 
-          <div class="search-block" v-if="searchValue.length > 0">
-            <div class="search-title"><img src="../../assets/expr-lang.png"/>解析搜索表达式</div>
-            <div class="search-body">{{searchValue}}</div>
-          </div>
+<!--          <div class="search-block" v-if="searchValue.length > 0">-->
+<!--            <div class="search-title"><img src="../../assets/expr-lang.png"/>解析搜索表达式</div>-->
+<!--            <div class="search-body">{{searchValue}}</div>-->
+<!--          </div>-->
 
-          <div class="search-block" v-if="databaseGroupList.length > 0">
-            <div class="search-title"><img src="../../assets/database-group-icon.png"/>查询数据库组</div>
-            <div class="search-body" v-for="(item,index) in databaseGroupList" :index="index">
-              <div v-if="!item.includes('*')"><a :href="'database/detail/' + item"></a></div>
-              <div v-else>{{item}}</div>
-            </div>
-          </div>
+<!--          <div class="search-block" v-if="databaseGroupList.length > 0">-->
+<!--            <div class="search-title"><img src="../../assets/database-group-icon.png"/>查询数据库组</div>-->
+<!--            <div class="search-body" v-for="(item,index) in databaseGroupList" :index="index">-->
+<!--              <div v-if="!item.includes('*')"><a :href="'database/detail/' + item"></a></div>-->
+<!--              <div v-else>{{item}}</div>-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <div class="search-block" v-if="databaseList.length > 0">
-            <div class="search-title"><img src="../../assets/database-icon.png"/>查询数据库</div>
-            <div class="search-body" v-for="(item,index) in databaseList" :index="index">
-              <div v-if="!item.includes('*')"><a :href="'database/detail/' + item"></a></div>
-              <div v-else>{{item}}</div>
-            </div>
-          </div>
+<!--          <div class="search-block" v-if="databaseList.length > 0">-->
+<!--            <div class="search-title"><img src="../../assets/database-icon.png"/>查询数据库</div>-->
+<!--            <div class="search-body" v-for="(item,index) in databaseList" :index="index">-->
+<!--              <div v-if="!item.includes('*')"><a :href="'database/detail/' + item"></a></div>-->
+<!--              <div v-else>{{item}}</div>-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <div class="search-block" v-if="tableList.length > 0">
-            <div class="search-title">查询表</div>
-            <div class="search-body" v-for="(item,index) in tableList" :index="index">
-              <div v-if="!item.includes('*')"><a :href="'database/detail/' + item"></a></div>
-              <div v-else>{{item}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="right"></div>
-    </div>
+<!--          <div class="search-block" v-if="tableList.length > 0">-->
+<!--            <div class="search-title">查询表</div>-->
+<!--            <div class="search-body" v-for="(item,index) in tableList" :index="index">-->
+<!--              <div v-if="!item.includes('*')"><a :href="'database/detail/' + item"></a></div>-->
+<!--              <div v-else>{{item}}</div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="right"></div>-->
+<!--    </div>-->
   </div>
 
 </template>
