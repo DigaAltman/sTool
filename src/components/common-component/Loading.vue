@@ -1,5 +1,4 @@
 <template>
-<!--  :style="{left:(appWidth - 300)/2 + 'px', top: (appHeight - 150)/2 + 'px'}"-->
   <div id="loading" v-if="loadingStatus" :style="{width:appWidth+'px', height: appHeight + 'px', top: '0px'}">
     <div class="loading-body">
       <div v-for="(item, index) in Array.from({length: maxLength})"
@@ -52,8 +51,6 @@
 <style lang="scss" scoped>
   #loading {
     position: fixed;
-    /*width: 300px;*/
-    /*height: 150px;*/
     display: flex;
     background-color: #323232;
     opacity: 0.8;

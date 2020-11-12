@@ -63,9 +63,6 @@
         validationMessage: '',
       }
     },
-    created() {
-      this.$store.dispatch('showLoading');
-    },
     methods: {
       clearValidationMessage() {
         this.validationMessage = '';
@@ -120,10 +117,10 @@
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    background: #092756;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background: #092756;
     background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104, 128, 138, .4) 10%, rgba(138, 114, 76, 0) 40%), -moz-linear-gradient(top, rgba(57, 173, 219, .25) 0%, rgba(42, 60, 87, .4) 100%), -moz-linear-gradient(-45deg, #670d10 0%, #092756 100%);
     background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104, 128, 138, .4) 10%, rgba(138, 114, 76, 0) 40%), -webkit-linear-gradient(top, rgba(57, 173, 219, .25) 0%, rgba(42, 60, 87, .4) 100%), -webkit-linear-gradient(-45deg, #670d10 0%, #092756 100%);
     background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104, 128, 138, .4) 10%, rgba(138, 114, 76, 0) 40%), -o-linear-gradient(top, rgba(57, 173, 219, .25) 0%, rgba(42, 60, 87, .4) 100%), -o-linear-gradient(-45deg, #670d10 0%, #092756 100%);
@@ -161,7 +158,7 @@
       .login-error {
         transition: height 0.25s;
         margin: 10px auto;
-        font-size: 15px;
+        font-size: 13px;
         background-color: #ffe3e6;
 
 
