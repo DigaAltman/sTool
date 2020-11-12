@@ -17,6 +17,6 @@ export default {
   appWidth: document.body.clientWidth,
 
   // 全局高度
-  appHeight: document.body.clientHeight === 0 ? 680 : document.body.clientHeight
+  appHeight: document.body.clientHeight === 0 ? 700 : document.body.clientHeight
 
 }

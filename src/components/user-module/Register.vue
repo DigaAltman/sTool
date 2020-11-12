@@ -2,7 +2,7 @@
   <div class="register">
 
     <!-- 注册表单 -->
-    <div class="register-from" :style="{height: validation ? '540px' : '520px'}">
+    <div class="register-from" :style="{height: validation ? '570px' : '520px'}">
 
       <div class="register-title">Create your a account</div>
 
@@ -43,15 +43,13 @@
              id="nickname" spellcheck="false" placeholder="用户的昵称,默认昵称是用户ID"/>
 
       <!-- 注册按钮 -->
-      <input type="submit" name="commit" value="Create account" tabindex="3" class="btn btn-primary btn-block"
+      <input type="submit"  :disabled="!buttonStatus" @click="register" name="commit" :value="buttonStatus ? 'Create account' : `${seconds}秒后可使用` " tabindex="3" class="btn btn-primary btn-block"
+             :style="{backgroundColor: buttonStatus ? '#009fff' : '#8b9092'}"
              data-disable-with="Signing in…">
 
       <p class="login-callout mt-3">
         Registered successfully?
-        <a data-ga-click="Sign in, switch to sign up"
-           data-hydro-click="{&quot;event_type&quot;:&quot;authentication.click&quot;,&quot;payload&quot;:{&quot;location_in_page&quot;:&quot;sign in switch to sign up&quot;,&quot;repository_id&quot;:null,&quot;auth_type&quot;:&quot;SIGN_UP&quot;,&quot;originating_url&quot;:&quot;https://github.com/login&quot;,&quot;user_id&quot;:null}}"
-           data-hydro-click-hmac="72d062e79bb6ab076a3b88b32943286ea51894183bd812a5038d00013946f239"
-           href="/join?source=login">Sign in...</a>.
+        <router-link  to="/login">Sign in...</router-link>
       </p>
     </div>
   </div>
@@ -66,6 +64,11 @@
     name: 'Register',
     data() {
       return {
+        // 按钮是否激活, 默认激活
+        buttonStatus: true,
+        // 按钮剩余冷却时间
+        seconds: 0,
+
         username: '',
         password: '',
         confirmPassword: '',
@@ -79,7 +82,7 @@
         this.validationMessage = '';
       },
       validationDataModel(type) {
-        let {username, password, confirmPassword, email, nickname, validationMessage} = this;
+        let {username, password, confirmPassword, email} = this;
         switch (type) {
           case 'username':
             if (username.trim().length === 0) {
@@ -106,6 +109,26 @@
 
         this.validationMessage = '';
         return true;
+      },
+      register() {
+
+        if(this.validationDataModel('username') && this.validationDataModel('password') && this.validationDataModel('confirmPassword')  && this.validationDataModel('email')) {
+          this.validationMessage = '';
+          // 冷却按钮, 避免重复表单登录
+          this.buttonStatus = false;
+          // 默认 60s 冷却时间
+          this.seconds = 30;
+
+          let _that = this;
+          // 激活计时器
+          let interval = setInterval(() => {
+            if(_that.seconds === 0) {
+              _that.buttonStatus = true;
+              clearInterval(interval);
+            }
+            _that.seconds --;
+          }, 1000);
+        }
       }
     },
     computed: {

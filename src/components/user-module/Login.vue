@@ -28,15 +28,12 @@
                autocomplete="current-password"/>
 
         <input type="submit" :disabled="!buttonStatus" @click="login" name="commit" :value="buttonStatus ? 'Sign in' : `${seconds}秒后可使用`" tabindex="3" class="btn btn-primary btn-block"
-               :style="{backgroundColor: buttonStatus ? '#009fff' : '#8b9092'}" data-disable-with="Signing in…">
+               :style="{backgroundColor: buttonStatus ? '#009fff' : '#8b9092'}" data-disable-with="Signing in…"/>
       </div>
 
       <p class="login-callout mt-3">
         New to STool?
-        <a data-ga-click="Sign in, switch to sign up"
-           data-hydro-click="{&quot;event_type&quot;:&quot;authentication.click&quot;,&quot;payload&quot;:{&quot;location_in_page&quot;:&quot;sign in switch to sign up&quot;,&quot;repository_id&quot;:null,&quot;auth_type&quot;:&quot;SIGN_UP&quot;,&quot;originating_url&quot;:&quot;https://github.com/login&quot;,&quot;user_id&quot;:null}}"
-           data-hydro-click-hmac="72d062e79bb6ab076a3b88b32943286ea51894183bd812a5038d00013946f239"
-           href="/join?source=login">Create an account</a>.
+        <router-link  to="/register">Create an account</router-link>
       </p>
     </div>
   </div>
@@ -95,7 +92,8 @@
           let _that = this;
           // 激活计时器
           let interval = setInterval(() => {
-            if(_that.seconds <= 0) {
+            if(_that.seconds === 0) {
+              _that.buttonStatus = true;
               clearInterval(interval)
             }
             _that.seconds --;
@@ -116,7 +114,6 @@
     position: relative;
     width: 100%;
     height: 100%;
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -131,7 +128,7 @@
       border: 1px solid #323232;
       width: 340px;
       transition: height 0.3s;
-      margin: 10px auto;
+      margin: 0 auto;
       padding: 10px;
       box-shadow: 0 5px 15px -5px rgba(176, 222, 211, 0.89);
       background-color: #f9f9f9;
