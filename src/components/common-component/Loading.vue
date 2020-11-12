@@ -1,5 +1,6 @@
 <template>
-  <div id="loading">
+<!--  :style="{left:(appWidth - 300)/2 + 'px', top: (appHeight - 150)/2 + 'px'}"-->
+  <div id="loading" v-if="loadingStatus" :style="{width:appWidth+'px', height: appHeight + 'px', top: '0px'}">
     <div class="loading-body">
       <div v-for="(item, index) in Array.from({length: maxLength})"
            :index="index"
@@ -12,6 +13,8 @@
 
 <script>
   // 加载组件
+  import {mapState} from "vuex";
+
   export default {
     name: "Loading",
     data() {
@@ -34,6 +37,9 @@
         ]
       }
     },
+    computed: {
+      ...mapState(['appWidth', 'appHeight', 'loadingStatus'])
+    },
     mounted() {
       let _that = this;
       setInterval(function () {
@@ -46,9 +52,11 @@
 <style lang="scss" scoped>
   #loading {
     position: fixed;
-    width: 100%;
-    height: 100%;
+    /*width: 300px;*/
+    /*height: 150px;*/
     display: flex;
+    background-color: #323232;
+    opacity: 0.8;
     align-items: center;
 
     .loading-body {
@@ -72,24 +80,24 @@
         top: 0px;
         left: 0px;
 
-        animation:b 2s infinite;
-        -webkit-animation:b 2s infinite;
+        animation: b 2s infinite;
+        -webkit-animation: b 2s infinite;
       }
 
       .left {
         top: 70px;
         left: -35px;
 
-        animation:a 2s infinite;
-        -webkit-animation:a 2s infinite;
+        animation: a 2s infinite;
+        -webkit-animation: a 2s infinite;
       }
 
       .right {
         top: 70px;
         left: 30px;
 
-        animation:c 2s infinite;
-        -webkit-animation:c 2s infinite;
+        animation: c 2s infinite;
+        -webkit-animation: c 2s infinite;
       }
 
       .zoom {
@@ -100,62 +108,59 @@
     }
   }
 
-  @keyframes a
-  {
-    0%   {
+  @keyframes a {
+    0% {
       left: -30px;
       top: 70px;
     }
-    33.3%  {
+    33.3% {
       left: 10px;
       top: 0px;
     }
-    66.6%  {
+    66.6% {
       left: 50px;
       top: 70px;
     }
-    100%  {
+    100% {
       left: -30px;
       top: 70px;
     }
   }
 
-  @keyframes b
-  {
-    0%   {
+  @keyframes b {
+    0% {
       left: 0px;
       top: 0px;
     }
-    33.3%  {
+    33.3% {
       left: 40px;
       top: 70px;
     }
-    66.6%  {
+    66.6% {
       left: -45px;
       top: 70px;
     }
-    100%  {
+    100% {
       left: 0px;
       top: 0px;
     }
   }
 
 
-  @keyframes c
-  {
-    0%   {
+  @keyframes c {
+    0% {
       top: 70px;
       left: 30px;
     }
-    33.3%  {
+    33.3% {
       left: -55px;
       top: 70px;
     }
-    66.6%  {
+    66.6% {
       left: -10px;
       top: 0px;
     }
-    100%  {
+    100% {
       top: 70px;
       left: 30px;
     }

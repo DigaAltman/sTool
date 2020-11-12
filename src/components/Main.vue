@@ -27,7 +27,7 @@
       }
     },
     created() {
-      this.$showLoading(this);
+
     }
   }
 </script>

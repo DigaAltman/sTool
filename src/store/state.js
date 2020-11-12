@@ -9,6 +9,14 @@ export default {
   user: {
 
   },
+
   // 加载动画, 默认不显示
-  loadingStatus: false
+  loadingStatus: false,
+
+  // 全局宽度
+  appWidth: document.body.clientWidth,
+
+  // 全局高度
+  appHeight: document.body.clientHeight === 0 ? 700 : document.body.clientHeight
+
 }

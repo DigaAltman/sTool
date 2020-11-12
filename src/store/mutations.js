@@ -28,6 +28,15 @@ export default {
    * @param state
    */
   hideLoading: function(state) {
+    console.log(state);
     state.loadingStatus = false
+  },
+
+  bodyWidthMutations(state, width) {
+    state.appWidth = width;
+  },
+
+  bodyHeightMutations(state, height) {
+    state.appHeight = height;
   }
 }

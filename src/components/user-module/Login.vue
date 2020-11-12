@@ -18,7 +18,7 @@
         <label for="username">username or email address</label>
         <input type="text" @blur="validationUsername" v-model="username" name="login" id="username"
                class="form-control input-block" tabindex="1"
-               autocomplete="username" autofocus="autofocus" spellcheck="false"/>
+               autocomplete="username" spellcheck="false"/>
 
         <label for="password">password
           <a class="label-link" href="/password_reset">forget password?</a>
@@ -64,10 +64,7 @@
       }
     },
     created() {
-      let _that = this;
-      setTimeout(function () {
-        _that.$hideLoading(_that)
-      }, 500);
+      this.$store.dispatch('showLoading');
     },
     methods: {
       clearValidationMessage() {
