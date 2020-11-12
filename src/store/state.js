@@ -8,5 +8,7 @@ export default {
   // 当前登录用户
   user: {
 
-  }
+  },
+  // 加载动画, 默认不显示
+  loadingStatus: false
 }

@@ -10,29 +10,24 @@
   import DatabaseDock from './database-component/DatabaseDock';
   import DatabaseGroupDock from './database-component/DatabaseGroupDock';
   import httpRequestService from '../service/HttpRequestService';
-  import Loading from '@/components/common-component/Loading.js';
+  import {mapState} from "vuex";
 
   export default {
     name: 'Main',
     components: {
       DatabaseGroupDock,
-      DatabaseDock,
-      Loading
+      DatabaseDock
+    },
+    computed: {
+
     },
     data() {
       return {
-        load: {
-          loading: false,
-          success: false,
-          server: false,
-          error: false
-        },
-        message: '',
-        show: false
+
       }
     },
     created() {
-      setTimeout(Loading.showLoading, 10000);
+      this.$showLoading(this);
     }
   }
 </script>

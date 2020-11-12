@@ -1,5 +1,5 @@
 <template>
-  <div class="loading">
+  <div id="loading">
     <div class="loading-body">
       <div v-for="(item, index) in Array.from({length: maxLength})"
            :index="index"
@@ -38,13 +38,13 @@
       let _that = this;
       setInterval(function () {
         _that.selectIndex = ++_that.selectIndex % _that.maxLength;
-      }, 1000);
+      }, 1200);
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .loading {
+  #loading {
     position: fixed;
     width: 100%;
     height: 100%;

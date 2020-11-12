@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Main from '@/components/Main';
-import Header from '@/components/user-module/Header';
-import Loading from '@/components/common-component/Loading';
+import Login from '@/components/user-module/Login';
 
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -14,14 +14,9 @@ export default new Router({
       component: Main
     },
     {
-      path: '/head',
-      name: 'Header',
-      component: Header
-    },
-    {
-      path: '/loading',
-      name: 'Loading',
-      component: Loading
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

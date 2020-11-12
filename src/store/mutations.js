@@ -13,6 +13,21 @@ export default {
    */
   setUser: function (state, user) {
     state.user = user;
-  }
+  },
 
+  /**
+   * 显示加载动画
+   * @param state
+   */
+  showLoading: function(state) {
+    state.loadingStatus = true
+  },
+
+  /**
+   * 隐藏加载动画
+   * @param state
+   */
+  hideLoading: function(state) {
+    state.loadingStatus = false
+  }
 }
