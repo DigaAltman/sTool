@@ -23,7 +23,7 @@
     -moz-osx-font-smoothing: grayscale;
     width: 100%;
     height: 100%;
-    position: relative;
+    position: fixed;
     text-align: center;
     color: #2c3e50;
   }
