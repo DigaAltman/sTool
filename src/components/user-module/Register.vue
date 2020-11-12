@@ -2,13 +2,14 @@
   <div class="register">
 
     <!-- 注册表单 -->
-    <div class="register-from">
+    <div class="register-from" :style="{height: validation ? '540px' : '520px'}">
 
       <div class="register-title">Create your a account</div>
 
-      <div class="register-error">
-        用户名不能为空!!
-        <button class="flash-close js-flash-close" type="button" aria-label="Dismiss this message">
+      <div class="register-error" :class="{'show-error': validation}" :style="{height: validation ? '15px' : '0px'}">
+        {{validationMessage}}
+        <button v-if="validation" @click="clearValidationMessage" class="flash-close js-flash-close" type="button"
+                aria-label="Dismiss this message">
           <svg class="octicon octicon-x" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
             <path fill-rule="evenodd"
                   d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
@@ -18,27 +19,28 @@
 
       <!-- 用户名 -->
       <label for="username">Username</label>
-      <input class="form-control" type="text" id="username" autocomplete="username" autofocus="autofocus"
-             spellcheck="false" placeholder="用户名"/>
+      <input class="form-control" @blur="validationDataModel('username')" v-model="username" type="text" id="username"
+             autocomplete="username" spellcheck="false" placeholder="用户名"/>
 
       <!-- 密码 -->
       <label for="password">Password</label>
-      <input class="form-control" type="password" id="password" autofocus="autofocus" placeholder="密码的不能低于6位, 不能高于15位"/>
+      <input class="form-control" @blur="validationDataModel('password')" v-model="password" type="password"
+             id="password" placeholder="密码的不能低于6位, 不能高于15位"/>
 
       <!-- 确认密码 -->
       <label for="confirmPassword">Confirm Password</label>
-      <input class="form-control" type="password" id="confirmPassword" autofocus="autofocus"
-             placeholder="必须保证和上次的密码一致"/>
+      <input class="form-control" @blur="validationDataModel('confirmPassword')" v-model="confirmPassword"
+             type="password" id="confirmPassword" placeholder="必须保证和上次的密码一致"/>
 
       <!-- 邮箱 -->
       <label for="email">Email</label>
-      <input class="form-control" type="email" id="email" autofocus="autofocus" spellcheck="false"
-             placeholder="请保证邮箱的可靠性,必须没有被使用"/>
+      <input class="form-control" @blur="validationDataModel('email')" v-model="email" type="email" id="email"
+             spellcheck="false" placeholder="请保证邮箱的可靠性,必须没有被使用"/>
 
       <!-- 用户昵称 -->
       <label for="nickname">Nickname</label>
-      <input class="form-control" type="nickname" id="nickname" autofocus="autofocus" spellcheck="false"
-             placeholder="用户的昵称,默认昵称是用户ID"/>
+      <input class="form-control" @blur="validationDataModel('nickname')" v-model="nickname" type="nickname"
+             id="nickname" spellcheck="false" placeholder="用户的昵称,默认昵称是用户ID"/>
 
       <!-- 注册按钮 -->
       <input type="submit" name="commit" value="Create account" tabindex="3" class="btn btn-primary btn-block"
@@ -68,11 +70,48 @@
         password: '',
         confirmPassword: '',
         email: '',
-        nickname: ''
+        nickname: '',
+        validationMessage: ''
       }
     },
-    created() {
+    methods: {
+      clearValidationMessage() {
+        this.validationMessage = '';
+      },
+      validationDataModel(type) {
+        let {username, password, confirmPassword, email, nickname, validationMessage} = this;
+        switch (type) {
+          case 'username':
+            if (username.trim().length === 0) {
+              this.validationMessage = '用户名不能为空';
+            }
+            return false;
 
+          case 'password':
+          case 'confirmPassword':
+            if (password.trim().length === 0 || confirmPassword.trim().length === 0) {
+              this.validationMessage = '密码不能为空';
+            }
+            if (password.trim().length < 6 || confirmPassword.trim().length < 6) {
+              this.validationMessage = '密码不能小于6位';
+            }
+            return false;
+
+          case 'email':
+            if (email.trim().length > 0 && !/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(email.trim())) {
+              this.validationMessage = "邮箱格式不正确"
+            }
+            return false;
+        }
+
+        this.validationMessage = '';
+        return true;
+      }
+    },
+    computed: {
+      validation() {
+        return this.validationMessage.length > 0;
+      }
     }
   }
 </script>
@@ -93,6 +132,7 @@
     justify-content: center;
 
     .register-from {
+      transition: height 0.3s;
       margin: 0 auto;
       width: 400px;
       box-shadow: 0 2px 10px -2px rgba(176, 222, 211, 0.89);
@@ -105,6 +145,11 @@
         font-size: 25px;
       }
 
+      .show-error {
+        border: 1px solid #9e1c2333;
+        padding: 5px 10px;
+      }
+
       .register-error:hover {
         -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 60px #FFE9D4 inset;
         -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 40px #FFE9D4 inset;
@@ -112,10 +157,9 @@
       }
 
       .register-error {
+        transition: height 0.25s;
         margin: 10px auto;
-        padding: 5px 10px;
         font-size: 13px;
-        border: 1px solid #9e1c2333;
         background-color: #ffe3e6;
 
         .flash-close {
@@ -196,13 +240,6 @@
       }
     }
   }
-
-
-
-
-
-
-
 
 
   .other {
