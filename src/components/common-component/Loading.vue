@@ -52,7 +52,7 @@
   #loading {
     position: fixed;
     display: flex;
-    background-color: #323232;
+    background-color: #fff;
     opacity: 0.8;
     align-items: center;
 
