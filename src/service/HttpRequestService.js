@@ -15,7 +15,6 @@ import axios from 'axios';
  */
 function request({type = 'GET', header = {'Content-Type': 'application/json'}, url, params = {}, loading, success, error, server, final}) {
 
-  return new Promise(function (resolve, reject) {
     let promise;
 
     //  触发 loading 函数
@@ -46,7 +45,6 @@ function request({type = 'GET', header = {'Content-Type': 'application/json'}, u
 
     // 请求成功
     promise.then(function (response) {
-      resolve(response.data);
 
       // 响应成功
       if (response.data.status === 200) {
@@ -64,12 +62,8 @@ function request({type = 'GET', header = {'Content-Type': 'application/json'}, u
     promise.catch(function (e) {
       //  触发 error 函数
       error instanceof Function && error(e);
-      reject('404 ERROR');
       final instanceof Function && final();
     });
-
-
-  });
 }
 
 // HTTP 请求类型
@@ -99,7 +93,7 @@ export default {
         server  = function() {},
         final   = function() {}
     }) {
-    return request({url, params, loading, success, error, server, final});
+    request({url, params, loading, success, error, server, final});
   },
 
   /**
@@ -123,7 +117,7 @@ export default {
       server  = function() {},
       final   = function() {}
     }) {
-    return request({type: POST, url, params, loading, success, error, server, final});
+    request({type: POST, url, params, loading, success, error, server, final});
   },
 
   /**
@@ -147,7 +141,7 @@ export default {
                     server  = function() {},
                     final   = function() {}
     }) {
-    return request({type: POST, header: {'Content-Type': 'multipart/form-data'}, url, params, loading, success, error, server, final});
+    request({type: POST, header: {'Content-Type': 'multipart/form-data'}, url, params, loading, success, error, server, final});
   }
 
 }

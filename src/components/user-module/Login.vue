@@ -17,7 +17,7 @@
       <div class="form-login">
         <label for="username">username or email address</label>
         <input type="text" @blur="validationUsername" v-model="username" name="login" id="username"
-               class="form-control input-block" tabindex="1"
+               class="form-control input-block" tabindex="1" placeholder="username:{username} | email:{email}"
                autocomplete="username" spellcheck="false"/>
 
         <label for="password">password
@@ -27,19 +27,22 @@
                class="form-control input-block" tabindex="2"
                autocomplete="current-password"/>
 
-        <input type="submit" :disabled="!buttonStatus" @click="login" name="commit" :value="buttonStatus ? 'Sign in' : `${seconds}秒后可使用`" tabindex="3" class="btn btn-primary btn-block"
+        <input type="submit" :disabled="!buttonStatus" @click="login" name="commit"
+               :value="buttonStatus ? 'Sign in' : `${seconds}秒后可使用`" tabindex="3" class="btn btn-primary btn-block"
                :style="{backgroundColor: buttonStatus ? '#009fff' : '#8b9092'}" data-disable-with="Signing in…"/>
       </div>
 
       <p class="login-callout mt-3">
         New to STool?
-        <router-link  to="/register">Create an account</router-link>
+        <router-link to="/register">Create an account</router-link>
       </p>
     </div>
   </div>
 </template>
 
 <script>
+  import HttpRequestService from "../../service/HttpRequestService";
+  import {ERROR} from '../../common/DialogCommon';
 
   /**
    * 加载动画组件
@@ -59,6 +62,9 @@
         // 效验信息
         validationMessage: '',
       }
+    },
+    created() {
+      this.$store.dispatch('showDialog', ERROR);
     },
     methods: {
       clearValidationMessage() {
@@ -90,13 +96,47 @@
           this.seconds = 30;
 
           let _that = this;
+
+          let params = {
+            password: _that.password
+          };
+          if (_that.username.startsWith("username:") || !_that.username.startsWith('email:')) {
+            params.username = _that.username.startsWith("username:") ? _that.username.substr("username:".length) : _that.username;
+          } else {
+            params.email = _that.username
+          }
+
+          // 请求后端服务器
+          HttpRequestService.post({
+            url: '/api/user/login',
+            params,
+            loading() {
+              _that.$store.dispatch('showLoading');
+            },
+            success(response) {
+              _that.$store.dispatch('hideLoading');
+              _that.$store.dispatch('setUser', response.data);
+              _that.back();
+            },
+            server(response) {
+              _that.$store.dispatch('hideLoading');
+              ERROR.message = response.message;
+              _that.$store.dispatch('showDialog', ERROR)
+            },
+            error: function() {
+              _that.$store.dispatch('hideLoading');
+              ERROR.message = '无法请求服务器, 请检查您的网络连接';
+              _that.$store.dispatch('showDialog', ERROR);
+            }
+          })
+
           // 激活计时器
           let interval = setInterval(() => {
-            if(_that.seconds === 0) {
+            if (_that.seconds === 0) {
               _that.buttonStatus = true;
               clearInterval(interval)
             }
-            _that.seconds --;
+            _that.seconds--;
           }, 1000);
         }
       }

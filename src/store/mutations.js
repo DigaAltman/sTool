@@ -19,7 +19,7 @@ export default {
    * 显示加载动画
    * @param state
    */
-  showLoading: function(state) {
+  showLoading: function (state) {
     state.loadingStatus = true
   },
 
@@ -27,8 +27,7 @@ export default {
    * 隐藏加载动画
    * @param state
    */
-  hideLoading: function(state) {
-    console.log(state);
+  hideLoading: function (state) {
     state.loadingStatus = false
   },
 
@@ -38,5 +37,12 @@ export default {
 
   bodyHeightMutations(state, height) {
     state.appHeight = height;
+  },
+
+  /**
+   * 设置当前的 Dialog 对象
+   */
+  setDialog(state, dialog) {
+    state.dialog = dialog;
   }
 }

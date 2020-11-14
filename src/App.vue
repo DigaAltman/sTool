@@ -2,6 +2,7 @@
   <div id="app" :style="{width: appWidth + 'px', height: appHeight + 'px'}">
     <router-view/>
     <loading/>
+    <dia-log/>
   </div>
 </template>
 
@@ -9,10 +10,14 @@
 
   import {mapState} from "vuex";
   import Loading from "./components/common-component/Loading.vue";
+  import Dialog from "./components/common-component/Dialog";
 
   export default {
     name: 'App',
-    components: {Loading},
+    components: {
+      Loading,
+      'dia-log': Dialog
+    },
     computed: {
       ...mapState(['loadingStatus', 'appWidth', 'appHeight'])
     },
@@ -20,7 +25,7 @@
       window.onresize = () => {
         return (() => {
           this.$store.commit('bodyWidthMutations', document.body.clientWidth);
-          this.$store.commit('bodyHeightMutations', document.body.clientHeight);
+          this.$store.commit('bodyHeightMutations', window.innerHeight);
         })()
       }
     }
@@ -33,7 +38,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0 auto;
-    height: 600px;
+    transition: width 0.25s, height 0.25s;
     position: relative;
     text-align: center;
     color: #2c3e50;

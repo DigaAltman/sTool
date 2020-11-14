@@ -1,6 +1,8 @@
 <template>
-  <div id="loading" v-if="loadingStatus" :style="{width:appWidth+'px', height: appHeight + 'px', top: '0px'}">
-    <div class="loading-body">
+  <div id="loading"  v-if="loadingStatus" :style="{width:appWidth+'px', height: appHeight + 'px', top: '0px'}">
+    <div class="template"></div>
+
+    <div class="loading-body" :style="{bottom: (appHeight - 100)/2 + 'px', left: (appWidth - 200)/2 + 'px'}">
       <div v-for="(item, index) in Array.from({length: maxLength})"
            :index="index"
            :style="{backgroundColor: selectIndex === index ? bgColor[index]['select'] : bgColor[index]['noSelect']}"
@@ -51,15 +53,19 @@
 <style lang="scss" scoped>
   #loading {
     position: fixed;
-    display: flex;
-    background-color: #fff;
-    opacity: 0.8;
-    align-items: center;
+
+    .template {
+      width: 100%;
+      height: 100%;
+      background-color: #323232;
+      opacity: 0.8;
+    }
 
     .loading-body {
+      position: fixed;
       width: 200px;
+      background-color: #323232;
       height: 100px;
-      margin: 0 auto;
       padding: 5px 0;
       transition: background-color 0.5s;
 
@@ -67,7 +73,7 @@
         display: inline-block;
         position: relative;
         width: 10px;
-        marin: 0;
+        margin: 0 auto;
         height: 10px;
         border-radius: 50%;
         transition: width 0.5s, height 0.5s, border-radius 0.5s, background-color 0.5s;

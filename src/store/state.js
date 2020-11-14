@@ -17,6 +17,20 @@ export default {
   appWidth: document.body.clientWidth,
 
   // 全局高度
-  appHeight: document.body.clientHeight === 0 ? 700 : document.body.clientHeight
+  appHeight: window.innerHeight,
+
+  // dialog 对象
+  dialog: {
+    // Dialog 类型
+    type: '',
+    // Dialog 描述信息
+    message: '',
+    // 是否显示 dialog
+    status: false,
+    // 取消函数
+    cancel: function() {},
+    // 下一步函数
+    continue: function() {}
+  }
 
 }

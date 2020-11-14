@@ -10,6 +10,15 @@ import store  from './store';
 
 Vue.config.productionTip = false;
 
+// 返回到上次的URL, 如果没有直接返回首页
+Vue.prototype.back = function () {
+  if (window.history.length > 1) {
+    this.$router.back();
+  } else {
+    this.$router.push('/');
+  }
+};
+
 new Vue({
   el: '#app',
   router,

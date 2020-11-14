@@ -16,5 +16,26 @@ export default {
    */
   hideLoading(context) {
     context.commit('hideLoading');
+  },
+
+  /**
+   * 显示 Dialog
+   */
+  showDialog({commit}, dialog) {
+    dialog.status = true;
+    commit('setDialog', dialog);
+  },
+
+  /**
+   * 隐藏 Dialog
+   */
+  hideDialog({commit}) {
+    commit('setDialog', {
+      type: null,
+      status: false,
+      message: null,
+      cancel: null,
+      continue: null
+    });
   }
 }

@@ -5,6 +5,8 @@ import Login from '@/components/user-module/Login';
 import Register from "@/components/user-module/Register";
 import Forget from '@/components/user-module/Forget';
 import Reset from "@/components/user-module/Reset";
+
+import Loading from "../components/common-component/Loading";
 import Dialog from "../components/common-component/Dialog";
 
 Vue.use(Router);
@@ -41,6 +43,11 @@ export default new Router({
       path: '/dialog',
       name: 'Dialog',
       component: Dialog
+    },
+    {
+      path: '/loading',
+      name: 'Loading',
+      component: Loading
     }
   ]
 })

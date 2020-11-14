@@ -3,7 +3,8 @@
     <div v-for="(element,index) in list" class="simple-database-group" :index="index" @mouseover="setZoomIndex(index)"
          @click="setSelectIndex(index)" @mouseout="setZoomIndex(-999)">
       <div class="icon" :style="compileStyle(index)">
-        <img src="../../assets/database-group.png"/>
+        <img v-if="index === selectIndex"  src="../../assets/database-group-select.png"/>
+        <img v-else  src="../../assets/database-group.png"/>
       </div>
 
       <div class="title" v-if="index == zoomIndex">
