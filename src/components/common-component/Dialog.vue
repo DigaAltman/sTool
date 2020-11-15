@@ -3,7 +3,6 @@
     <div class="dialog-body">
       <div class="close-line">
         <div class="block close" @click="closeDialog"></div>
-        <div :class="{block:true, enlarge: !allowZoom, reduce: allowZoom}" ></div>
       </div>
 
       <div :class="{type:true, error: dialog.type === 'ERROR', warning: dialog.type === 'WARN', success: dialog.type === 'SUCCESS'}">
@@ -103,10 +102,6 @@
 
         .close {
           background-color: #ff0000;
-        }
-
-        .enlarge {
-          background-color: #60ff01;
         }
       }
 

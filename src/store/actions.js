@@ -37,5 +37,34 @@ export default {
       cancel: null,
       continue: null
     });
-  }
+  },
+
+  /**
+   * 设置当前用户的数据库组信息
+   */
+  setDatabaseGroupList({commit}, databaseGroupList) {
+    commit('setDatabaseGroupList', databaseGroupList);
+  },
+
+  /**
+   *设置当前选中的数据库组索引
+   *
+   * @param commit
+   * @param index
+   */
+  setCurrentDatabaseGroupIndex({commit}, index) {
+    commit('setCurrentDatabaseGroupIndex', index);
+  },
+
+  /**
+   * 设置当前的数据库列表
+   *
+   * @param commit
+   * @param databaseList
+   */
+  setDatabaseList({commit}, databaseList) {
+    commit('setDatabaseList', databaseList);
+  },
+
+
 }

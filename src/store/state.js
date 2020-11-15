@@ -6,9 +6,7 @@
  */
 export default {
   // 当前登录用户
-  user: {
-
-  },
+  user: null,
 
   // 加载动画, 默认不显示
   loadingStatus: false,
@@ -31,6 +29,17 @@ export default {
     cancel: function() {},
     // 下一步函数
     continue: function() {}
-  }
+  },
+
+  // 当前用户的数据库组
+  databaseGroupList: [],
+
+  // 当前用户点击的数据库组, 默认是第一个
+  currentDatabaseGroupIndex: 0,
+
+  // 当前选择的数据库组对应的数据库信息
+  databaseList: []
 
 }
+
+

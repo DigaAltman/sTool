@@ -23,16 +23,14 @@ function request({type = 'GET', header = {'Content-Type': 'application/json'}, u
     // 根据请求类型进行不同的业务处理
     switch (type) {
       case GET:
-        promise = axios.get(url, {
-          params: params,
+        promise = axios.get(url, params, {
           headers: header
         });
 
         break;
 
       case POST:
-        promise = axios.post(url, {
-          params: params,
+        promise = axios.post(url, params, {
           headers: header
         });
 

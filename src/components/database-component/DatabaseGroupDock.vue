@@ -1,13 +1,13 @@
 <template>
   <div class="database-group-list" :style="{marginTop: `${marginTopLength}px`}">
-    <div v-for="(element,index) in list" class="simple-database-group" :index="index" @mouseover="setZoomIndex(index)"
+    <div v-for="(element,index) in databaseGroupList" class="simple-database-group" :index="index" @mouseover="setZoomIndex(index)"
          @click="setSelectIndex(index)" @mouseout="setZoomIndex(-999)">
       <div class="icon" :style="compileStyle(index)">
-        <img v-if="index === selectIndex"  src="../../assets/database-group-select.png"/>
+        <img v-if="index === currentDatabaseGroupIndex"  src="../../assets/database-group-select.png"/>
         <img v-else  src="../../assets/database-group.png"/>
       </div>
 
-      <div class="title" v-if="index == zoomIndex">
+      <div class="title" v-if="index === zoomIndex">
         <div>{{element.databaseGroupName}}</div>
       </div>
     </div>
@@ -17,6 +17,9 @@
 
 <script>
 
+  import httpRequestService from '../../service/HttpRequestService';
+  import {mapState} from 'vuex';
+
   /**
    * 加载动画组件
    */
@@ -25,80 +28,23 @@
     data() {
       return {
         zoomIndex: -999,
-        selectIndex: -999,
-        list: [
-          {
-            databaseGroupId: 'a7024d9a-cb99-4576-b673-9083df198246',
-            databaseGroupName: 'mysql',
-            userId: '4a5e8017-a520-4632-87e0-e0666efe3237',
-            createTime: 1603804206,
-            updateTime: 1603804206,
-            version: 1
-          },
-          {
-            databaseGroupId: '36326095-b8c0-4e7b-82d2-98a44503be18',
-            databaseGroupName: 'oracle',
-            userId: '4a5e8017-a520-4632-87e0-e0666efe3237',
-            createTime: 1603804206,
-            updateTime: 1603804206,
-            version: 1
-          },
-          {
-            databaseGroupId: '2b2c3d5c-af23-4c68-9a6a-5c970a004ad5',
-            databaseGroupName: 'sybase',
-            userId: '4a5e8017-a520-4632-87e0-e0666efe3237',
-            createTime: 1603804206,
-            updateTime: 1603804206,
-            version: 1
-          },
-          {
-            databaseGroupId: 'fdd8c19d-fb72-4c05-b2c7-69609bfbcd8e',
-            databaseGroupName: 'db2',
-            userId: '4a5e8017-a520-4632-87e0-e0666efe3237',
-            createTime: 1603804206,
-            updateTime: 1603804206,
-            version: 1
-          },
-          {
-            databaseGroupId: 'a7024d9a-cb99-4576-b673-9083df198246',
-            databaseGroupName: 'mysql',
-            userId: '4a5e8017-a520-4632-87e0-e0666efe3237',
-            createTime: 1603804206,
-            updateTime: 1603804206,
-            version: 1
-          },
-          {
-            databaseGroupId: '36326095-b8c0-4e7b-82d2-98a44503be18',
-            databaseGroupName: 'oracle',
-            userId: '4a5e8017-a520-4632-87e0-e0666efe3237',
-            createTime: 1603804206,
-            updateTime: 1603804206,
-            version: 1
-          },
-          {
-            databaseGroupId: '2b2c3d5c-af23-4c68-9a6a-5c970a004ad5',
-            databaseGroupName: 'sybase',
-            userId: '4a5e8017-a520-4632-87e0-e0666efe3237',
-            createTime: 1603804206,
-            updateTime: 1603804206,
-            version: 1
-          },
-          {
-            databaseGroupId: 'fdd8c19d-fb72-4c05-b2c7-69609bfbcd8e',
-            databaseGroupName: 'db2',
-            userId: '4a5e8017-a520-4632-87e0-e0666efe3237',
-            createTime: 1603804206,
-            updateTime: 1603804206,
-            version: 1
-          }
-        ]
       }
+    },
+    created() {
+      let _that = this;
+
+      httpRequestService.get({
+        url: '/api/database_group/list',
+        success(response) {
+          _that.$store.dispatch('setDatabaseGroupList', response.data);
+        }
+      })
     },
     methods: {
       compileStyle(index) {
-        let {zoomIndex, selectIndex} = this;
+        let {zoomIndex, currentDatabaseGroupIndex} = this;
 
-        if (index == selectIndex) {
+        if (index === currentDatabaseGroupIndex) {
           return {
             width: '70px',
             height: '60px',
@@ -106,7 +52,7 @@
             transform: `rotate(360deg)`
           }
         }
-        if (index == zoomIndex) {
+        if (index === zoomIndex) {
           return {
             width: '70px',
             height: '60px',
@@ -130,13 +76,29 @@
         this.zoomIndex = index;
       },
       setSelectIndex(index) {
-        this.selectIndex = index;
+        let _that = this;
+
+        _that.$store.dispatch('setCurrentDatabaseGroupIndex', index);
+        let {databaseGroupList} = _that;
+
+        // 如果数据库组程序坞的长度 大于 当前用户选择的数据库组索引
+        if (databaseGroupList.length > index) {
+          let databaseGroup = databaseGroupList[index];
+          console.log(databaseGroup);
+          httpRequestService.get({
+            url: '/api/database/list/' + databaseGroup.databaseGroupId,
+            success(response) {
+              _that.$store.dispatch('setDatabaseList', response.data);
+            }
+          });
+        }
       }
     },
     computed: {
+      ...mapState(['databaseGroupList', 'currentDatabaseGroupIndex']),
       // 距离下部分边距,居中使用
       marginTopLength() {
-        return this.list ? -1 * this.list.length * 35 : 0;
+        return this.databaseGroupList ? -1 * this.databaseGroupList.length * 35 : 0;
       }
     }
   }
@@ -148,7 +110,6 @@
     width: 40px;
     padding-left: 5px;
     background-color: #c7c7c730;
-    border: 1px solid #323232;
     border-left: none;
     border-radius: 0px 8px 8px 0px;
     top: 50%;

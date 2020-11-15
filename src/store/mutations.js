@@ -44,5 +44,35 @@ export default {
    */
   setDialog(state, dialog) {
     state.dialog = dialog;
+  },
+
+  /**
+   * 设置当前用户对应的数据库组
+   *
+   * @param state
+   * @param databaseGroupList
+   */
+  setDatabaseGroupList(state, databaseGroupList) {
+    state.databaseGroupList = databaseGroupList;
+  },
+
+  /**
+   * 设置当前选中的数据库组索引
+   *
+   * @param state
+   * @param index
+   */
+  setCurrentDatabaseGroupIndex(state, index) {
+    state.currentDatabaseGroupIndex = index;
+  },
+
+  /**
+   * 设置当前数据库列表
+   *
+   * @param state
+   * @param databaseList
+   */
+  setDatabaseList(state, databaseList) {
+    state.databaseList = databaseList;
   }
 }

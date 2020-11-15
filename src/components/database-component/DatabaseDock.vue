@@ -10,30 +10,26 @@
           @click="clickHandler($event, index)">
 
         <div class="database-item" :style="computedStyle(index)">
-          <img :src="item.productType == 0 ? require('../../assets/mysql.png') : require('../../assets/database.png')"/>
-          <div class="title" :style="zoomIndex == index ? {bottom: '10px', opacity: 1} : {bottom: '0px', opacity: 0}">
-            {{item.productName}}
+          <img :src="item.productType === 0 ? require('../../assets/mysql.png') : require('../../assets/database.png')"/>
+          <div class="title" :style="zoomIndex === index ? {bottom: '10px', opacity: 1} : {bottom: '0px', opacity: 0}">
+            {{item.databaseName}}
           </div>
         </div>
 
       </li>
 
     </ul>
-
-    <div class="table-container" :style="tableContainerStyle">
-
-    </div>
-
   </div>
 </template>
 
 <script>
+  import httpRequestService from '../../service/HttpRequestService';
+  import {mapState} from 'vuex';
 
   export default {
     name: 'HelloWorld',
     data() {
       return {
-
         clickStatus: false,
         clickIndex: -999,
 
@@ -42,44 +38,6 @@
 
         zoomStatus: false,
         zoomIndex: -999,
-        databaseList: [
-          {
-            productType: 0,
-            productName: "mt_ds_view"
-          },
-          {
-            productType: 0,
-            productName: "mt_gk_czdb"
-          },
-          {
-            productType: 0,
-            productName: "mt_rd_exam"
-          },
-          {
-            productType: 0,
-            productName: "mt_rd_reporting"
-          },
-          {
-            productType: 0,
-            productName: "GZCZ12019"
-          },
-          {
-            productType: 1,
-            productName: "GZCZ22020"
-          },
-          {
-            productType: 1,
-            productName: "JACZ2019"
-          },
-          {
-            productType: 1,
-            productName: "JACZ2020"
-          },
-          {
-            productType: 1,
-            productName: "JJCZ2020"
-          }
-        ]
       }
     },
     methods: {
@@ -120,6 +78,7 @@
       }
     },
     computed: {
+      ...mapState(['databaseList']),
       outerContainerLength() {
         let {zoomIndex, databaseList, zoomStatus} = this;
         if (zoomIndex >= 0 || zoomStatus) {
@@ -146,7 +105,7 @@
   .database-dock {
     position: relative;
     width: 100%;
-    margin: 25px auto;
+    margin: 0 auto;
     min-width: 1000px;
     height: 100px;
 
@@ -195,17 +154,6 @@
         }
       }
     }
-
-    .table-container {
-      transition: width 0.5s, height 0.5s, margin-top 0.25s;
-      position: relative;
-      width: 0;
-      height: 0;
-      border: 1px solid #323232;
-      box-sizing: border-box;
-      margin: 0 auto;
-    }
-
 
   }
 </style>

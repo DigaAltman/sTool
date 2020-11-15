@@ -63,9 +63,6 @@
         validationMessage: '',
       }
     },
-    created() {
-      this.$store.dispatch('showDialog', ERROR);
-    },
     methods: {
       clearValidationMessage() {
         this.validationMessage = '';
@@ -106,6 +103,8 @@
             params.email = _that.username
           }
 
+
+          console.log(params);
           // 请求后端服务器
           HttpRequestService.post({
             url: '/api/user/login',
@@ -128,7 +127,7 @@
               ERROR.message = '无法请求服务器, 请检查您的网络连接';
               _that.$store.dispatch('showDialog', ERROR);
             }
-          })
+          });
 
           // 激活计时器
           let interval = setInterval(() => {

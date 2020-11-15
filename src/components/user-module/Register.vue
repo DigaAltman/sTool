@@ -56,6 +56,11 @@
 </template>
 
 <script>
+  import HttpRequestService from "../../service/HttpRequestService";
+  import {
+    ERROR,
+    SUCCESS
+  } from '../../common/DialogCommon';
 
   /**
    * 加载动画组件
@@ -69,11 +74,22 @@
         // 按钮剩余冷却时间
         seconds: 0,
 
+
+        // 用户名称
         username: '',
+
+        // 密码
         password: '',
+
+        // 确认密码
         confirmPassword: '',
+
+        // 邮箱
         email: '',
+
+        // 昵称
         nickname: '',
+
         validationMessage: ''
       }
     },
@@ -88,6 +104,10 @@
             if (username.trim().length === 0) {
               this.validationMessage = '用户名不能为空';
             }
+
+            // TODO 判断用户名称是否已经被注册
+
+
             return false;
 
           case 'password':
@@ -104,6 +124,10 @@
             if (email.trim().length > 0 && !/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(email.trim())) {
               this.validationMessage = "邮箱格式不正确"
             }
+
+            // TODO 判断昵称是否已经被注册
+
+
             return false;
         }
 
@@ -120,6 +144,41 @@
           this.seconds = 30;
 
           let _that = this;
+
+          let params = {
+            username: _that.username,
+            password: _that.password,
+            confirmPassword: _that.confirmPassword
+          };
+
+          _that.email && (params.email = _that.email);
+          _that.nickname && (params.nickname = _that.nickname);
+
+          // 请求后端服务
+          HttpRequestService.post({
+            url: '/api/user/register',
+            params,
+            loading() {
+              _that.$store.dispatch('showLoading');
+            },
+            success(response) {
+              _that.$store.dispatch('hideLoading');
+              SUCCESS.message = response.message;
+              _that.$store.dispatch('showDialog', SUCCESS)
+            },
+            server(response) {
+              _that.$store.dispatch('hideLoading');
+              ERROR.message = response.message;
+              _that.$store.dispatch('showDialog', ERROR)
+            },
+            error: function() {
+              _that.$store.dispatch('hideLoading');
+              ERROR.message = '无法请求服务器, 请检查您的网络连接';
+              _that.$store.dispatch('showDialog', ERROR);
+            }
+          });
+
+
           // 激活计时器
           let interval = setInterval(() => {
             if(_that.seconds === 0) {
