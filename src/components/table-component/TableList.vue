@@ -1,11 +1,11 @@
 <template>
   <div class="tab-list">
-    <div class="table-list" v-show="false" @mouseout="changeZoomIndex(-999)">
+    <div class="table-list" @mouseout="changeZoomIndex(-999)">
       <div class="table"
            @contextmenu.prevent.stop="rightClick(index,$event)"
            @mouseover="changeZoomIndex(index)"
            v-for="(item,index) in compileTableList" :index="index"
-           :style="{opacity: item ? 1 : 0, cursor: item ? 'pointer' : 'normal'}">
+           :style="{opacity: item ? 1 : 0, cursor: item ? 'pointer' : 'normal', backgroundColor: index === selectIndex ? '#dfe1c9' : '#fff'}">
         <div class="img" :style="compileTableImgStyle(index)"><img src="../../assets/table.png"/></div>
         <div class="title" :style="compileTitleStyle(index)">
           {{item ? item : '补充数据使用'}}
@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div class="menu">
+    <div class="menu" v-if="showRightMenu" :style="{top: `${pageY}px`, left: `${pageX}px`}">
       <div class="menu-item" v-for="(item,index) in rightMenuList">
         <div class="menu-item-img"><img :src="item.img"/></div>
         <div class="menu-item-title" @click="item.click">{{item.title}}</div>
@@ -81,7 +81,8 @@
             }
           }
         ],
-        zoomIndex: 0,
+        zoomIndex: -999,
+        selectIndex: -999,
         tableList: [
           'bis_name',
           'budget',
@@ -94,17 +95,22 @@
           'rd_nz_budget_hz',
           'rd_nz_pay_detail',
           'vw_rd_nz_budget_hz'
-        ]
+        ],
+        pageX: 0,
+        pageY: 0,
+        showRightMenu: false,
       }
     },
     methods: {
       changeZoomIndex(index) {
         if (index < this.tableList.length) {
-          this.zoomIndex = index;
+          if(index !== this.selectIndex) {
+            this.zoomIndex = index;
+          }
         }
       },
       compileTableImgStyle(index) {
-        let {zoomIndex} = this;
+        let {zoomIndex, selectIndex} = this;
 
         if (zoomIndex === -999) {
           return {
@@ -115,7 +121,7 @@
         }
 
         // 同一个
-        if (index === zoomIndex) {
+        if (index === zoomIndex || index === selectIndex) {
           return {
             width: '100px',
             height: '95px',
@@ -154,7 +160,12 @@
 
       },
       rightClick(index, $event) {
-        console.log(index);
+        let {pageX, pageY} = $event;
+
+        this.pageX = pageX;
+        this.pageY = pageY;
+        this.selectIndex = index;
+        this.showRightMenu = true;
       }
     },
     computed: {
@@ -178,8 +189,6 @@
     margin: 10px auto;
 
     .menu {
-      left: 10px;
-      top: 10px;
       position: fixed;
       width: 200px;
       height: 330px;
