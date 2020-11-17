@@ -9,6 +9,7 @@ import Reset from "@/components/user-module/Reset";
 import Loading from "../components/common-component/Loading";
 import Dialog from "../components/common-component/Dialog";
 import TableList from "../components/table-component/TableList";
+import Code from "../components/common-component/Code";
 
 Vue.use(Router);
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/tab-list',
       name: 'TableList',
       component: TableList
+    },
+    {
+      path: '/code',
+      name: 'Code',
+      component: Code
     }
   ]
 })
