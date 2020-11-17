@@ -1,6 +1,6 @@
 <template>
-  <div class="table-list">
-    <div class="table" @mouseover="changeZoomIndex(index)" @mouseout="changeZoomIndex(-999)"
+  <div class="table-list" @mouseout="changeZoomIndex(-999)">
+    <div class="table" @mouseover="changeZoomIndex(index)"
          v-for="(item,index) in compileTableList" :index="index" :style="{opacity: item ? 1 : 0}">
       <div class="img" :style="compileTableImgStyle(index)"><img src="../../assets/table.png"/></div>
       <div class="title" :style="compileTitleStyle(index)">
@@ -39,33 +39,29 @@
       compileTableImgStyle(index) {
         let {zoomIndex} = this;
 
-        // 当前选中行
-        let level = zoomIndex >= 0 ? zoomIndex / 4 : -999;
-
-        // 同一层
-        if (index / 4 === level) {
-          // 同一个
-          if (index === zoomIndex) {
-            return {
-              width: '100px',
-              height: '95px',
-              marginTop: '0px auto'
-            }
-          }
-
+        if(zoomIndex === -999) {
           return {
-            width: '70px',
-            height: '70px',
-            marginTop: '15px auto'
+            width: '80px',
+            height: '80px',
+            marginTop: '10px auto'
           }
+        }
 
+        // 同一个
+        if (index === zoomIndex) {
+          return {
+            width: '100px',
+            height: '95px',
+            marginTop: '0px auto'
+          };
         }
 
         return {
-          width: '80px',
-          height: '80px',
-          marginTop: '10px auto'
+          width: '70px',
+          height: '70px',
+          marginTop: '15px auto'
         }
+
       },
       compileTitleStyle(index) {
         let {zoomIndex} = this;
