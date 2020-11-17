@@ -14,36 +14,11 @@
     </div>
 
     <div class="menu">
-      <div class="menu-item">
-        <div class="menu-item-img"><img src="../../assets/code.png"/></div>
-        <div class="menu-item-title">Generate Entity</div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-img"><img src="../../assets/code.png"/></div>
-        <div class="menu-item-title">Generate Mapper</div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-img"><img src="../../assets/edit-tab.png"/></div>
-        <div class="menu-item-title">Edit Table Structure</div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-img"><img src="../../assets/edit-tab.png"/></div>
-        <div class="menu-item-title">Read Table Detail</div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-img"><img src="../../assets/delete-table.png"/></div>
-        <div class="menu-item-title">Delete Table</div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-img"><img src="../../assets/save-file.png"/></div>
-        <div class="menu-item-title">Backup Table</div>
-      </div>
-      <div class="menu-item">
-        <div class="menu-item-img"><img src="../../assets/trash-empty.png"/></div>
-        <div class="menu-item-title">Backup Table</div>
+      <div class="menu-item" v-for="(item,index) in rightMenuList">
+        <div class="menu-item-img"><img :src="item.img"/></div>
+        <div class="menu-item-title" @click="item.click">{{item.title}}</div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -52,8 +27,61 @@
     name: "TableList",
     data() {
       return {
+        rightMenuList: [
+          {
+            img: require('../../assets/code.png'),
+            title: 'Generate Entity',
+            click() {
+              console.log('Generate Entity')
+            }
+          },
+          {
+            img: require('../../assets/code.png'),
+            title: 'Generate Mapper',
+            click() {
+              console.log('Generate Mapper')
+            }
+          },
+          {
+            img: require('../../assets/edit-tab.png'),
+            title: 'Edit Structure',
+            click() {
+              console.log('Edit Structure')
+            }
+          },
+          {
+            img: require('../../assets/edit-tab.png'),
+            title: 'Read Detail',
+            click() {
+              console.log('Read Detail')
+            }
+          },
+          {
+            img: require('../../assets/delete-table.png'),
+            title: 'Delete Table',
+            click() {
+              console.log('Delete Table')
+            }
+          },
+          {
+            img: require('../../assets/save-file.png'),
+            title: 'Backup Table',
+            click() {
+              console.log('Backup Table')
+            }
+          },
+          {
+            // 附带图片
+            img: require('../../assets/trash-empty.png'),
+            // 显示标题
+            title: 'Truncate Table',
+            // 点击事件
+            click() {
+              console.log('Truncate Table');
+            }
+          }
+        ],
         zoomIndex: 0,
-
         tableList: [
           'bis_name',
           'budget',
@@ -154,10 +182,12 @@
       top: 10px;
       position: fixed;
       width: 200px;
-      height: 300px;
+      height: 330px;
       background-color: #fff;
 
       .menu-item {
+        cursor: pointer;
+        margin: 5px auto;
         padding: 5px 10px;
         display: flex;
 
