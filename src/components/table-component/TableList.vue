@@ -1,9 +1,11 @@
 <template>
   <div class="table-list">
-    <div class="table" @mouseover="changeZoomIndex(index)" @mouseout="changeZoomIndex(-999)" v-for="(item,index) in compileTableList" :index="index"
-         :style="{opacity: item ? 1 : 0}">
-      <div class="img" ><img src="../../assets/table.png"/></div>
-      <div class="title" >{{item ? item : '补充数据使用'}}</div>
+    <div class="table" @mouseover="changeZoomIndex(index)" @mouseout="changeZoomIndex(-999)"
+         v-for="(item,index) in compileTableList" :index="index" :style="{opacity: item ? 1 : 0}">
+      <div class="img" :style="compileTableImgStyle(index)"><img src="../../assets/table.png"/></div>
+      <div class="title" :style="compileTitleStyle(index)">
+        {{item ? item : '补充数据使用'}}
+      </div>
     </div>
   </div>
 </template>
@@ -13,7 +15,8 @@
     name: "TableList",
     data() {
       return {
-        zoomIndex: -999,
+        zoomIndex: 0,
+
         tableList: [
           'bis_name',
           'budget',
@@ -32,6 +35,65 @@
     methods: {
       changeZoomIndex(index) {
         this.zoomIndex = index;
+      },
+      compileTableImgStyle(index) {
+        let {zoomIndex} = this;
+
+        // 当前选中行
+        let level = zoomIndex >= 0 ? zoomIndex / 4 : -999;
+
+        // 同一层
+        if (index / 4 === level) {
+          // 同一个
+          if (index === zoomIndex) {
+            return {
+              width: '100px',
+              height: '95px',
+              marginTop: '0px auto'
+            }
+          }
+
+          return {
+            width: '70px',
+            height: '70px',
+            marginTop: '15px auto'
+          }
+
+        }
+
+        return {
+          width: '80px',
+          height: '80px',
+          marginTop: '10px auto'
+        }
+      },
+      compileTitleStyle(index) {
+        let {zoomIndex} = this;
+
+        // 当前选中行
+        let level = zoomIndex / 4;
+
+        // 同一层
+        if (index / 4 === level) {
+          // 同一个
+          if (index === zoomIndex) {
+            return {
+              fontSize: '16px',
+              fontWeight: '500'
+            }
+          }
+
+          return {
+            fontSize: '13px',
+            fontWeight: '400'
+          }
+
+        }
+
+        return {
+          fontSize: '14px',
+          fontWeight: '400'
+        }
       }
     },
     computed: {
@@ -41,7 +103,7 @@
           return this.tableList;
         }
 
-        return [...this.tableList, ...Array.from({length:4 - v})]
+        return [...this.tableList, ...Array.from({length: 4 - v})]
       }
     }
   }
@@ -51,7 +113,7 @@
   .table-list {
     position: relative;
     width: 690px;
-    height: 400px;
+    height: 450px;
     background-color: #fff;
     margin: 100px auto;
     border-radius: 10px;
@@ -61,17 +123,18 @@
     flex-wrap: wrap;
 
     .table {
-      margin: 5px 10px;
-      display: inline-block;
+      margin: 10px 10px;
       white-space: normal;
+      border: 1px solid #fff;
       width: 150px;
-      height: 120px;
+      height: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       cursor: pointer;
 
       .img {
-        margin: 0 auto;
-        width: 80px;
-        height: 80px;
+        transition: width 0.2s, height 0.2s, margin-top 0.2s;
 
         img {
           width: 100%;
@@ -80,6 +143,8 @@
       }
 
       .title {
+        transition: font-size 0.2s, font-weight 0.2s;
+
         height: 25px;
         line-height: 25px;
         font-weight: 400;
