@@ -1,11 +1,9 @@
 <template>
   <div class='main'>
-<!--    <template v-if="user">-->
+    <template v-if="user">
       <database-group-dock/>
-
-
       <database-dock/>
-<!--    </template>-->
+    </template>
   </div>
 </template>
 
@@ -14,7 +12,7 @@
   import DatabaseGroupDock from './database-component/DatabaseGroupDock';
   import httpRequestService from '../service/HttpRequestService';
   import {ERROR, WARN} from '../common/DialogCommon.js';
-  import mapState from 'vuex';
+  import {mapState} from 'vuex';
 
   export default {
     name: 'Main',
@@ -23,7 +21,7 @@
       DatabaseDock
     },
     computed: {
-      // ...mapState(['user'])
+      ...mapState(['user'])
     },
     data() {
       return {}
