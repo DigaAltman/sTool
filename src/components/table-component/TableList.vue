@@ -1,12 +1,49 @@
 <template>
-  <div class="table-list" @mouseout="changeZoomIndex(-999)">
-    <div class="table" @mouseover="changeZoomIndex(index)"
-         v-for="(item,index) in compileTableList" :index="index" :style="{opacity: item ? 1 : 0}">
-      <div class="img" :style="compileTableImgStyle(index)"><img src="../../assets/table.png"/></div>
-      <div class="title" :style="compileTitleStyle(index)">
-        {{item ? item : '补充数据使用'}}
+  <div class="tab-list">
+    <div class="table-list" v-show="false" @mouseout="changeZoomIndex(-999)">
+      <div class="table"
+           @contextmenu.prevent.stop="rightClick(index,$event)"
+           @mouseover="changeZoomIndex(index)"
+           v-for="(item,index) in compileTableList" :index="index"
+           :style="{opacity: item ? 1 : 0, cursor: item ? 'pointer' : 'normal'}">
+        <div class="img" :style="compileTableImgStyle(index)"><img src="../../assets/table.png"/></div>
+        <div class="title" :style="compileTitleStyle(index)">
+          {{item ? item : '补充数据使用'}}
+        </div>
       </div>
     </div>
+
+    <div class="menu">
+      <div class="menu-item">
+        <div class="menu-item-img"><img src="../../assets/code.png"/></div>
+        <div class="menu-item-title">Generate Entity</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-img"><img src="../../assets/code.png"/></div>
+        <div class="menu-item-title">Generate Mapper</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-img"><img src="../../assets/edit-tab.png"/></div>
+        <div class="menu-item-title">Edit Table Structure</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-img"><img src="../../assets/edit-tab.png"/></div>
+        <div class="menu-item-title">Read Table Detail</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-img"><img src="../../assets/delete-table.png"/></div>
+        <div class="menu-item-title">Delete Table</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-img"><img src="../../assets/save-file.png"/></div>
+        <div class="menu-item-title">Backup Table</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-img"><img src="../../assets/trash-empty.png"/></div>
+        <div class="menu-item-title">Backup Table</div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -34,12 +71,14 @@
     },
     methods: {
       changeZoomIndex(index) {
-        this.zoomIndex = index;
+        if (index < this.tableList.length) {
+          this.zoomIndex = index;
+        }
       },
       compileTableImgStyle(index) {
         let {zoomIndex} = this;
 
-        if(zoomIndex === -999) {
+        if (zoomIndex === -999) {
           return {
             width: '80px',
             height: '80px',
@@ -66,30 +105,28 @@
       compileTitleStyle(index) {
         let {zoomIndex} = this;
 
-        // 当前选中行
-        let level = zoomIndex / 4;
-
-        // 同一层
-        if (index / 4 === level) {
-          // 同一个
-          if (index === zoomIndex) {
-            return {
-              fontSize: '16px',
-              fontWeight: '500'
-            }
-          }
-
+        if (zoomIndex === -999) {
           return {
-            fontSize: '13px',
+            fontSize: '14px',
             fontWeight: '400'
           }
+        }
 
+        if (index === zoomIndex) {
+          return {
+            fontSize: '16px',
+            fontWeight: '500'
+          }
         }
 
         return {
-          fontSize: '14px',
+          fontSize: '13px',
           fontWeight: '400'
         }
+
+      },
+      rightClick(index, $event) {
+        console.log(index);
       }
     },
     computed: {
@@ -106,8 +143,44 @@
 </script>
 
 <style lang="scss" scoped>
-  .table-list {
+  .tab-list {
     position: relative;
+    min-width: 800px;
+    height: 500px;
+    margin: 10px auto;
+
+    .menu {
+      left: 10px;
+      top: 10px;
+      position: fixed;
+      width: 200px;
+      height: 300px;
+      background-color: #fff;
+
+      .menu-item {
+        padding: 5px 10px;
+        display: flex;
+
+        .menu-item-img {
+          width: 30px;
+          height: 30px;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .menu-item-title {
+          height: 30px;
+          line-height: 30px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .table-list {
     width: 690px;
     height: 450px;
     background-color: #fff;
@@ -127,7 +200,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      cursor: pointer;
 
       .img {
         transition: width 0.2s, height 0.2s, margin-top 0.2s;
