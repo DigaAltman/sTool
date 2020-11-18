@@ -15,8 +15,8 @@
       </div>
     </div>
 
-    <div class="menu" v-if="showRightMenu" :style="{top: `${pageY}px`, left: `${pageX}px`, width: 0 <= menuZoomIndex < this.rightMenuList.length ? '200px' : '180px', height: 0 <= menuZoomIndex < this.rightMenuList.length ? '340px' : '320px'}" >
-      <div class="menu-item" @mouseover="changeMenuZoomIndex(index)" v-for="(item,index) in rightMenuList"
+    <div class="menu" v-if="showRightMenu" :style="{top: `${pageY}px`, left: `${pageX}px`, width: 0 <= menuZoomIndex < this.rightMenuList.length ? '200px' : '180px'}" >
+      <div class="menu-item" @mouseover="changeMenuZoomIndex(index)" @mouseout="changeMenuZoomIndex(-999)" v-for="(item,index) in rightMenuList"
            :class="{menuSelect: index === menuZoomIndex}">
         <div class="menu-item-img" :class="{menuSelectImg: index === menuZoomIndex}"><img :src="item.img"/></div>
         <div class="menu-item-title" @click="item.click" :class="{menuSelectTitle: index === menuZoomIndex}">{{item.title}}</div>
@@ -193,7 +193,8 @@
 
     .menu {
       position: fixed;
-      transition: width 0.2s, height 0.2s;
+      transition: width 0.2s;
+      height: 320px;
       border-radius: 5px;
       border: 1px solid #ccc;
       background-color: #fff;
@@ -202,7 +203,6 @@
         cursor: pointer;
         margin: 5px auto;
         padding: 5px 10px;
-        transition: height 0.2s;
         display: flex;
 
         .menu-item-img {
@@ -227,7 +227,6 @@
       }
 
       .menuSelect {
-        height: 40px;
 
         .menuSelectImg {
           width: 35px;
