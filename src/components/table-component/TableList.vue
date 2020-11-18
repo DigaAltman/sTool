@@ -15,10 +15,11 @@
       </div>
     </div>
 
-    <div class="menu" v-if="showRightMenu" :style="{top: `${pageY}px`, left: `${pageX}px`}">
-      <div class="menu-item" @mouseover="changeMenuZoomIndex(index)" v-for="(item,index) in rightMenuList" :class="{menuSelect: index === menuZoomIndex}">
-        <div class="menu-item-img"><img :src="item.img"/></div>
-        <div class="menu-item-title" @click="item.click">{{item.title}}</div>
+    <div class="menu" v-if="showRightMenu" :style="{top: `${pageY}px`, left: `${pageX}px`, width: 0 <= menuZoomIndex < this.rightMenuList.length ? '200px' : '180px', height: 0 <= menuZoomIndex < this.rightMenuList.length ? '340px' : '320px'}" >
+      <div class="menu-item" @mouseover="changeMenuZoomIndex(index)" v-for="(item,index) in rightMenuList"
+           :class="{menuSelect: index === menuZoomIndex}">
+        <div class="menu-item-img" :class="{menuSelectImg: index === menuZoomIndex}"><img :src="item.img"/></div>
+        <div class="menu-item-title" @click="item.click" :class="{menuSelectTitle: index === menuZoomIndex}">{{item.title}}</div>
       </div>
     </div>
   </div>
@@ -103,7 +104,7 @@
         showRightMenu: false,
 
         // 当前移动到的的菜单子项索引
-        menuZoomIndex: -999,
+        menuZoomIndex: 0,
       }
     },
     methods: {
@@ -192,8 +193,7 @@
 
     .menu {
       position: fixed;
-      width: 180px;
-      height: 320px;
+      transition: width 0.2s, height 0.2s;
       border-radius: 5px;
       border: 1px solid #ccc;
       background-color: #fff;
@@ -202,9 +202,11 @@
         cursor: pointer;
         margin: 5px auto;
         padding: 5px 10px;
+        transition: height 0.2s;
         display: flex;
 
         .menu-item-img {
+          transition: width 0.2s, height 0.2s;
           width: 30px;
           height: 30px;
 
@@ -215,6 +217,7 @@
         }
 
         .menu-item-title {
+          transition: font-size 0.25s, line-height 0.25s, height 0.25s;
           margin-top: 2.5px;
           height: 25px;
           font-size: 14px;
@@ -224,7 +227,18 @@
       }
 
       .menuSelect {
+        height: 40px;
 
+        .menuSelectImg {
+          width: 35px;
+          height: 35px;
+        }
+
+        .menuSelectTitle {
+          font-size: 16px;
+          line-height: 30px;
+          height: 30px;
+        }
       }
     }
   }
