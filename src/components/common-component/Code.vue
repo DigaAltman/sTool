@@ -23,7 +23,7 @@
 <script>
 
   export default {
-    name: "Code.vue",
+    name: "Code",
     data() {
       return {
         // 存储数据文件的数组

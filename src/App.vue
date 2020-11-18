@@ -38,7 +38,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0 auto;
-    transition: width 0.25s, height 0.25s;
+    transition: width 0.15s, height 0.15s;
     position: relative;
     text-align: center;
     color: #2c3e50;
