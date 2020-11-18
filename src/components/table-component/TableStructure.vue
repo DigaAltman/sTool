@@ -40,7 +40,15 @@
       </table>
     </div>
 
+    <!-- 生成SQL -->
+    <div class="generate-body">
+    </div>
 
+    <!-- 预览SQL -->
+    <div class="view-body">
+      <div class="title">映射为SQL</div>
+      <div class="body">SELECT course_id, course_name, course_address FROM database WHERE course_id = ?</div>
+    </div>
   </div>
 </template>
 
@@ -271,7 +279,7 @@
     position: relative;
     width: 80%;
     color: #fff;
-    margin: 50px auto;
+    margin: 20px auto;
 
     .name {
       text-align: left;
@@ -354,6 +362,11 @@
           }
         }
       }
+    }
+
+    .view-body {
+      margin-top: 30px;
+      text-align: left;
     }
   }
 </style>
