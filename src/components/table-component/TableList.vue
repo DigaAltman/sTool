@@ -1,11 +1,13 @@
 <template>
   <div class="tab-list">
-    <div class="table-list" @mouseout="changeZoomIndex(-999)">
+    <div class="table-list"
+         @click="hideRightMenu"
+         @mouseout="changeZoomIndex(-999)">
       <div class="table"
            @contextmenu.prevent.stop="rightClick(index,$event)"
            @mouseover="changeZoomIndex(index)"
            v-for="(item,index) in compileTableList" :index="index"
-           :style="{opacity: item ? 1 : 0, cursor: item ? 'pointer' : 'normal', backgroundColor: index === selectIndex ? '#dfe1c9' : '#fff'}">
+           :style="{opacity: item ? 1 : 0, cursor: item ? 'pointer' : 'normal', backgroundColor: index === selectIndex ? '#dfe3bb' : '#fff'}">
         <div class="img" :style="compileTableImgStyle(index)"><img src="../../assets/table.png"/></div>
         <div class="title" :style="compileTitleStyle(index)">
           {{item ? item : '补充数据使用'}}
@@ -14,7 +16,7 @@
     </div>
 
     <div class="menu" v-if="showRightMenu" :style="{top: `${pageY}px`, left: `${pageX}px`}">
-      <div class="menu-item" v-for="(item,index) in rightMenuList">
+      <div class="menu-item" @mouseover="changeMenuZoomIndex(index)" v-for="(item,index) in rightMenuList" :class="{menuSelect: index === menuZoomIndex}">
         <div class="menu-item-img"><img :src="item.img"/></div>
         <div class="menu-item-title" @click="item.click">{{item.title}}</div>
       </div>
@@ -99,65 +101,65 @@
         pageX: 0,
         pageY: 0,
         showRightMenu: false,
+
+        // 当前移动到的的菜单子项索引
+        menuZoomIndex: -999,
       }
     },
     methods: {
+      changeMenuZoomIndex(index) {
+        this.menuZoomIndex = index;
+      },
+
+      hideRightMenu() {
+        this.showRightMenu = false;
+      },
       changeZoomIndex(index) {
         if (index < this.tableList.length) {
-          if(index !== this.selectIndex) {
-            this.zoomIndex = index;
-          }
+          this.zoomIndex = index;
         }
       },
-      compileTableImgStyle(index) {
+
+      commonStyle(index, base, select, other) {
         let {zoomIndex, selectIndex} = this;
 
+        if (index === selectIndex || index === zoomIndex) {
+          return select;
+        }
+
         if (zoomIndex === -999) {
-          return {
-            width: '80px',
-            height: '80px',
-            marginTop: '10px auto'
-          }
+          return base;
         }
 
-        // 同一个
-        if (index === zoomIndex || index === selectIndex) {
-          return {
-            width: '100px',
-            height: '95px',
-            marginTop: '0px auto'
-          };
-        }
+        return other;
+      },
 
-        return {
+      compileTableImgStyle(index) {
+        return this.commonStyle(index, {
+          width: '80px',
+          height: '80px',
+          marginTop: '10px auto'
+        }, {
+          width: '100px',
+          height: '95px',
+          marginTop: '0px auto',
+        }, {
           width: '70px',
           height: '70px',
           marginTop: '15px auto'
-        }
-
+        });
       },
       compileTitleStyle(index) {
-        let {zoomIndex} = this;
-
-        if (zoomIndex === -999) {
-          return {
-            fontSize: '14px',
-            fontWeight: '400'
-          }
-        }
-
-        if (index === zoomIndex) {
-          return {
-            fontSize: '16px',
-            fontWeight: '500'
-          }
-        }
-
-        return {
+        return this.commonStyle(index, {
+          fontSize: '14px',
+          fontWeight: '400'
+        }, {
+          fontSize: '16px',
+          fontWeight: '500'
+        }, {
           fontSize: '13px',
           fontWeight: '400'
-        }
-
+        });
       },
       rightClick(index, $event) {
         let {pageX, pageY} = $event;
@@ -190,8 +192,10 @@
 
     .menu {
       position: fixed;
-      width: 200px;
-      height: 330px;
+      width: 180px;
+      height: 320px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
       background-color: #fff;
 
       .menu-item {
@@ -211,10 +215,16 @@
         }
 
         .menu-item-title {
-          height: 30px;
-          line-height: 30px;
+          margin-top: 2.5px;
+          height: 25px;
+          font-size: 14px;
+          line-height: 25px;
           margin-left: 10px;
         }
+      }
+
+      .menuSelect {
+
       }
     }
   }
@@ -233,7 +243,6 @@
     .table {
       margin: 10px 10px;
       white-space: normal;
-      border: 1px solid #fff;
       width: 150px;
       height: 130px;
       display: flex;
